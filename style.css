@@ -1,0 +1,514 @@
+/* =========================================================
+   JARVIS — Futuristic Dark Interface
+   Phone-first • No external libraries • Works with index.html
+   ========================================================= */
+
+:root {
+  color-scheme: dark;
+  --bg: #030508;
+  --panel: rgba(10, 16, 24, 0.82);
+  --panel-strong: rgba(12, 20, 30, 0.96);
+  --line: rgba(104, 220, 255, 0.18);
+  --line-strong: rgba(104, 220, 255, 0.45);
+  --cyan: #66e8ff;
+  --cyan-soft: rgba(102, 232, 255, 0.14);
+  --blue: #4e8cff;
+  --green: #63ffb0;
+  --amber: #ffd166;
+  --red: #ff6078;
+  --text: #e9f7ff;
+  --muted: #78909f;
+  --shadow: 0 0 40px rgba(43, 186, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px 16px 40px;
+  overflow-x: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 50% 15%, rgba(34, 112, 150, 0.14), transparent 34%),
+    radial-gradient(circle at 15% 85%, rgba(25, 64, 105, 0.10), transparent 32%),
+    linear-gradient(180deg, #05080c 0%, #020305 100%);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle futuristic grid */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.20;
+  background-image:
+    linear-gradient(rgba(102, 232, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(102, 232, 255, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 35%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+main {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* -------------------------
+   Header
+   ------------------------- */
+
+h1 {
+  position: relative;
+  margin: 8px 0 4px;
+  color: var(--text);
+  font-size: clamp(2rem, 9vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: 0.34em;
+  line-height: 1;
+  text-indent: 0.34em;
+  text-shadow:
+    0 0 8px rgba(102, 232, 255, 0.55),
+    0 0 28px rgba(55, 190, 255, 0.20);
+}
+
+h1::after {
+  content: "PERSONAL AI SYSTEM";
+  display: block;
+  margin-top: 11px;
+  color: var(--muted);
+  font-size: 0.23em;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+}
+
+/* -------------------------
+   Main JARVIS reactor button
+   ------------------------- */
+
+#talk {
+  position: relative;
+  isolation: isolate;
+  width: min(72vw, 270px);
+  aspect-ratio: 1;
+  margin: 48px auto 28px;
+  border: 1px solid rgba(102, 232, 255, 0.52);
+  border-radius: 50%;
+  color: var(--cyan);
+  background:
+    radial-gradient(circle at center, rgba(102, 232, 255, 0.13), transparent 31%),
+    radial-gradient(circle, rgba(8, 21, 31, 0.98) 0 57%, rgba(4, 9, 14, 0.98) 58%);
+  box-shadow:
+    inset 0 0 35px rgba(102, 232, 255, 0.08),
+    0 0 0 7px rgba(102, 232, 255, 0.025),
+    0 0 0 16px rgba(102, 232, 255, 0.018),
+    0 0 45px rgba(54, 202, 255, 0.14);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#talk::before,
+#talk::after {
+  content: "";
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  border: 1px solid rgba(102, 232, 255, 0.16);
+  pointer-events: none;
+}
+
+#talk::after {
+  inset: 18%;
+  border-color: rgba(102, 232, 255, 0.09);
+}
+
+#talk:hover {
+  border-color: rgba(102, 232, 255, 0.82);
+  box-shadow:
+    inset 0 0 45px rgba(102, 232, 255, 0.11),
+    0 0 0 7px rgba(102, 232, 255, 0.04),
+    0 0 0 16px rgba(102, 232, 255, 0.025),
+    0 0 65px rgba(54, 202, 255, 0.22);
+}
+
+#talk:active {
+  transform: scale(0.97);
+}
+
+#talk:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 7px;
+}
+
+/* State animations */
+
+#talk.idle {
+  animation: reactorBreath 4s ease-in-out infinite;
+}
+
+#talk.listening {
+  color: #8fffe0;
+  border-color: rgba(99, 255, 176, 0.8);
+  box-shadow:
+    inset 0 0 55px rgba(99, 255, 176, 0.12),
+    0 0 0 8px rgba(99, 255, 176, 0.05),
+    0 0 55px rgba(99, 255, 176, 0.25);
+  animation: listeningPulse 1.15s ease-in-out infinite;
+}
+
+#talk.thinking {
+  color: #8db6ff;
+  border-color: rgba(78, 140, 255, 0.82);
+  box-shadow:
+    inset 0 0 55px rgba(78, 140, 255, 0.12),
+    0 0 0 8px rgba(78, 140, 255, 0.04),
+    0 0 60px rgba(78, 140, 255, 0.24);
+  animation: thinkingSpin 1.8s linear infinite;
+}
+
+#talk.speaking {
+  color: var(--cyan);
+  border-color: rgba(102, 232, 255, 0.9);
+  box-shadow:
+    inset 0 0 60px rgba(102, 232, 255, 0.15),
+    0 0 0 8px rgba(102, 232, 255, 0.05),
+    0 0 70px rgba(102, 232, 255, 0.28);
+  animation: speakingPulse 0.72s ease-in-out infinite alternate;
+}
+
+/* -------------------------
+   Status + conversation
+   ------------------------- */
+
+#status {
+  min-height: 22px;
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+#status.error {
+  color: var(--red);
+}
+
+.chat {
+  width: 100%;
+  margin: 0 auto;
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(
+    145deg,
+    rgba(11, 20, 29, 0.82),
+    rgba(5, 10, 15, 0.88)
+  );
+  box-shadow: var(--shadow);
+  text-align: left;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.chat p {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(102, 232, 255, 0.07);
+  min-height: 45px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.chat p:last-child {
+  border-bottom: 0;
+}
+
+.chat .who {
+  color: var(--cyan);
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.chat p:nth-child(2) .who {
+  color: var(--green);
+}
+
+/* -------------------------
+   Navigation
+   ------------------------- */
+
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 18px 0 0;
+}
+
+.link {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 15px;
+  color: #a8c1ce;
+  background: rgba(8, 14, 21, 0.68);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.link:hover {
+  color: var(--cyan);
+  border-color: var(--line-strong);
+  background: var(--cyan-soft);
+}
+
+.link:active {
+  transform: translateY(1px);
+}
+
+/* -------------------------
+   Settings panel
+   ------------------------- */
+
+#settings {
+  width: min(calc(100% - 32px), 620px);
+  margin: 28px auto 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(12, 21, 31, 0.97), rgba(4, 8, 13, 0.98));
+  box-shadow:
+    0 20px 70px rgba(0, 0, 0, 0.42),
+    0 0 35px rgba(102, 232, 255, 0.06);
+  text-align: left;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+#settings h2 {
+  margin: 0 0 6px;
+  color: var(--cyan);
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+#settings label {
+  display: block;
+  margin: 16px 0;
+  color: #a8bfca;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#settings input,
+#settings select {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  padding: 13px 14px;
+  border: 1px solid rgba(102, 232, 255, 0.14);
+  border-radius: 12px;
+  outline: none;
+  color: var(--text);
+  background: rgba(2, 7, 11, 0.78);
+  font: inherit;
+  font-size: 0.92rem;
+  letter-spacing: normal;
+  text-transform: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+#settings input:focus,
+#settings select:focus {
+  border-color: rgba(102, 232, 255, 0.65);
+  background: rgba(5, 13, 20, 0.96);
+  box-shadow: 0 0 0 3px rgba(102, 232, 255, 0.08);
+}
+
+#settings a {
+  color: var(--cyan);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+#settings a:hover {
+  text-decoration: underline;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.row button {
+  flex: 1;
+  border: 1px solid rgba(102, 232, 255, 0.38);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #031016;
+  background: var(--cyan);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.row button.secondary {
+  color: #b7cbd4;
+  background: rgba(255, 255, 255, 0.035);
+  border-color: var(--line);
+}
+
+.row button:hover {
+  filter: brightness(1.08);
+}
+
+.row button:active {
+  transform: translateY(1px);
+}
+
+/* -------------------------
+   Small-screen tuning
+   ------------------------- */
+
+@media (max-width: 430px) {
+  body {
+    padding: 18px 12px 30px;
+  }
+
+  h1 {
+    margin-top: 5px;
+    font-size: 2.15rem;
+  }
+
+  #talk {
+    width: min(74vw, 250px);
+    margin-top: 40px;
+  }
+
+  .chat {
+    padding: 13px;
+  }
+
+  .chat p {
+    grid-template-columns: 62px 1fr;
+    gap: 8px;
+    font-size: 0.88rem;
+  }
+
+  .links {
+    flex-wrap: wrap;
+  }
+
+  #settings {
+    width: calc(100% - 24px);
+    padding: 18px;
+  }
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* -------------------------
+   Animations
+   ------------------------- */
+
+@keyframes reactorBreath {
+  0%, 100% {
+    box-shadow:
+      inset 0 0 35px rgba(102, 232, 255, 0.08),
+      0 0 0 7px rgba(102, 232, 255, 0.025),
+      0 0 0 16px rgba(102, 232, 255, 0.018),
+      0 0 45px rgba(54, 202, 255, 0.14);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 45px rgba(102, 232, 255, 0.12),
+      0 0 0 8px rgba(102, 232, 255, 0.035),
+      0 0 0 18px rgba(102, 232, 255, 0.022),
+      0 0 65px rgba(54, 202, 255, 0.22);
+  }
+}
+
+@keyframes listeningPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+@keyframes thinkingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes speakingPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.018); }
+}

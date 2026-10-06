@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <title>JARVIS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>JARVIS</h1>
+
+    <button id="talk" class="idle" type="button">TAP TO SPEAK</button>
+    <p id="status" role="status">Ready.</p>
+
+    <section class="chat" aria-live="polite">
+      <p><span class="who">You</span><span id="you">&nbsp;</span></p>
+      <p><span class="who">JARVIS</span><span id="jarvis">&nbsp;</span></p>
+    </section>
+
+    <div class="links">
+      <button id="open-settings" type="button" class="link">Settings</button>
+      <button id="new-chat" type="button" class="link">New conversation</button>
+    </div>
+  </main>
+
+  <section id="settings" hidden>
+    <h2>Settings</h2>
+    <p class="hint">Saved only on this phone. Never uploaded to GitHub.</p>
+
+    <label>AI service
+      <select id="provider"></select>
+    </label>
+    <p><a id="key-link" href="#" target="_blank" rel="noopener">Get a free API key</a></p>
+
+    <label>API key
+      <input id="api-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste your key here">
+    </label>
+    <label>Model
+      <input id="model" type="text" autocapitalize="off" spellcheck="false">
+    </label>
+    <label id="base-url-row">Base URL
+      <input id="base-url" type="text" autocapitalize="off" spellcheck="false">
+    </label>
+    <label>Speech language (blank = phone default)
+      <input id="lang" type="text" autocapitalize="off" spellcheck="false" placeholder="en-US">
+    </label>
+
+    <div class="row">
+      <button id="save" type="button">Save</button>
+      <button id="close-settings" type="button" class="secondary">Close</button>
+    </div>
+    <p id="settings-msg" class="hint"></p>
+  </section>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
